@@ -1,0 +1,21 @@
+# terraform.tfvars にコピーして、値を自分の環境のものに書き換える。
+# terraform.tfvars は .gitignore 済み（Slack の ID をコミットしない）。
+
+region = "ap-northeast-1"
+
+# 全リソースに付ける Owner タグの値
+owner = "your-name"
+
+# 記事の投稿先 Slack チャネルの ID（C で始まる。チャネル名ではない）
+slack_channel_id = "C0123456789"
+
+# DLQ 滞留アラームの通知先（アラート専用チャネル）の ID
+alarm_slack_channel_id = "C0123456789"
+
+# 第一報でメンションする Slack ユーザーのメンバー ID（U で始まる）。空文字ならメンションしない。
+# Slack で自分のプロフィール → 「︙」→「メンバー ID をコピー」で取得する。
+slack_mention_user_id = "U0123456789"
+
+# 初回 apply 用。直近 1 日分の記事だけを対象にして、過去記事の一斉投稿を抑える。
+# 稼働を確認したら既定値（2）に戻す（この行を消す）。
+# freshness_window_days = 1

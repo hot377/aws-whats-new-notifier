@@ -1,0 +1,14 @@
+*.tfstate
+*.tfstate.*
+.terraform/
+build/
+dist/
+__pycache__/
+.pytest_cache/
+
+# 環境固有の値（バケット名・Slack の ID）を含むため、雛形（*.example）だけをコミットする
+backend.tf
+terraform.tfvars
+
+# macOS
+.DS_Store

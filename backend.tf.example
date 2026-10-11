@@ -1,0 +1,13 @@
+# backend.tf にコピーして、bucket を自分の tfstate 保管用バケットに書き換える。
+# backend.tf は .gitignore 済み（バケット名をコミットしない）。
+#
+# use_lockfile = true は S3 ネイティブロック。バケットのバージョニングを有効にしておくこと。
+terraform {
+  backend "s3" {
+    bucket       = "<your-state-bucket>" # リテラルで書く（backend ブロックでは変数を使えない）
+    key          = "whatsnew/terraform.tfstate"
+    region       = "ap-northeast-1"
+    encrypt      = true
+    use_lockfile = true
+  }
+}
