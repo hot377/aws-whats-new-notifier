@@ -1,11 +1,45 @@
-# To get started with Dependabot version updates, you'll need to specify which
-# package ecosystems to update and where the package manifests are located.
-# Please see the documentation for all configuration options:
-# https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
-
 version: 2
+
+# 更新の PR は毎週月曜 09:00 JST に、エコシステムごとに 1 本へまとめて作る。
+# ラベルは指定せず、Dependabot の既定（`dependencies` とエコシステム名のラベル）に任せる。
+
 updates:
-  - package-ecosystem: "" # See documentation for possible values
-    directory: "/" # Location of package manifests
+  # provider（versions.tf と .terraform.lock.hcl）
+  - package-ecosystem: "terraform"
+    # modules/ は入れない。.terraform.lock.hcl が無いディレクトリは現在のバージョンを
+    # 特定できず、下の ignore が効かずにメジャー更新の PR が作られる
+    directory: "/"
     schedule:
       interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Asia/Tokyo"
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+    # provider のメジャー更新は破壊的変更を伴い、コードの修正が要る。
+    # 自動の PR では扱わず、手動で計画して上げる
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - "version-update:semver-major"
+    groups:
+      terraform:
+        patterns:
+          - "*"
+
+  # Lambda に同梱する Python パッケージ
+  - package-ecosystem: "pip"
+    directory: "/lambda"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Asia/Tokyo"
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+    groups:
+      pip:
+        patterns:
+          - "*"
